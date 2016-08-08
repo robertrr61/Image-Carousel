@@ -10,16 +10,21 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    
+    @IBOutlet weak var imageCarouselView: ImageCarouselView!
+    
+    var images: [UIImage]!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        images = [ UIImage(named: "1")!,
+                   UIImage(named: "2")!,
+                   UIImage(named: "3")!,
+                   UIImage(named: "4")!,
+                   UIImage(named: "5")! ]
+        
+        imageCarouselView.images = images
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-
 }
 
