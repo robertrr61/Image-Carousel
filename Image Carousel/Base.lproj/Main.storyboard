@@ -27,10 +27,10 @@
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="showPageControl" value="YES"/>
                                     <userDefinedRuntimeAttribute type="color" keyPath="pageColor">
-                                        <color key="value" red="0.76862745098039209" green="1" blue="0.3411764705882353" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="value" red="0.76862745099999996" green="1" blue="0.3411764706" alpha="1" colorSpace="calibratedRGB"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="currentPageColor">
-                                        <color key="value" red="0.066666666666666666" green="0.2627450980392157" blue="0.3529411764705882" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="value" red="0.066666666669999999" green="0.26274509800000001" blue="0.35294117650000001" alpha="1" colorSpace="calibratedRGB"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>

@@ -8,9 +8,15 @@
 
 import UIKit
 
+protocol ImageCarouselViewDelegate {
+    func scrolledToPage(page: Int)
+}
+
 @IBDesignable
 class ImageCarouselView: UIView {
-
+    
+    var delegate: ImageCarouselViewDelegate?
+    
     @IBInspectable var showPageControl: Bool = false {
         didSet {
             setupView()
@@ -26,6 +32,10 @@ class ImageCarouselView: UIView {
     }
     
     var pageControl = UIPageControl()
+    
+    var currentPage: Int! {
+        return Int(round(carouselScrollView.contentOffset.x / self.bounds.width))
+    }
     
     @IBInspectable var pageColor: UIColor? {
         didSet {
@@ -46,6 +56,7 @@ class ImageCarouselView: UIView {
         
         carouselScrollView = UIScrollView(frame: bounds)
         carouselScrollView.backgroundColor = UIColor.blackColor()
+        carouselScrollView.showsHorizontalScrollIndicator = false
         
         addImages()
         
@@ -64,6 +75,7 @@ class ImageCarouselView: UIView {
             imageView.image = images[i]
             imageView.contentMode = .ScaleAspectFill
             imageView.layer.masksToBounds = true
+            imageView.userInteractionEnabled = true
             carouselScrollView.addSubview(imageView)
             print("Added")
         }
@@ -104,15 +116,17 @@ class ImageCarouselView: UIView {
         
         setupView()
     }
-
+    
 }
 
 extension ImageCarouselView: UIScrollViewDelegate {
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        let currentPage = round(scrollView.contentOffset.x / self.bounds.width)
-        
-        self.pageControl.currentPage = Int(currentPage)
+        self.pageControl.currentPage = self.currentPage
+    }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        self.delegate?.scrolledToPage(self.currentPage)
     }
     
 }
