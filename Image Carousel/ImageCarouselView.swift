@@ -23,6 +23,13 @@ class ImageCarouselView: UIView {
         }
     }
     
+    @IBInspectable var pageControlMaxItems: Int = 10 {
+        didSet {
+            setupView()
+        }
+    }
+    var pageLabel = UILabel()
+    
     var carouselScrollView: UIScrollView!
     
     var images = [UIImage]() {
@@ -55,7 +62,6 @@ class ImageCarouselView: UIView {
         }
         
         carouselScrollView = UIScrollView(frame: bounds)
-        carouselScrollView.backgroundColor = UIColor.black
         carouselScrollView.showsHorizontalScrollIndicator = false
         
         addImages()
@@ -84,19 +90,34 @@ class ImageCarouselView: UIView {
     }
     
     func addPageControl() {
-        pageControl.numberOfPages = images.count
-        pageControl.sizeToFit()
-        pageControl.currentPage = 0
-        pageControl.center = CGPoint(x: self.center.x, y: bounds.height - pageControl.bounds.height/2 - 8)
-        
-        if let pageColor = self.pageColor {
-            pageControl.pageIndicatorTintColor = pageColor
+        if images.count <= pageControlMaxItems {
+            pageControl.numberOfPages = images.count
+            pageControl.sizeToFit()
+            pageControl.currentPage = 0
+            pageControl.center = CGPoint(x: self.center.x, y: bounds.height - pageControl.bounds.height/2 - 8)
+            
+            if let pageColor = self.pageColor {
+                pageControl.pageIndicatorTintColor = pageColor
+            }
+            if let currentPageColor = self.currentPageColor {
+                pageControl.currentPageIndicatorTintColor = currentPageColor
+            }
+            
+            self.addSubview(pageControl)
+        } else {
+            pageLabel.text = "1 / \(images.count)"
+            pageLabel.font = UIFont.systemFont(ofSize: 10.0, weight: UIFontWeightLight)
+            pageLabel.frame.size = CGSize(width: 40, height: 20)
+            pageLabel.textAlignment = .center
+            pageLabel.layer.cornerRadius = 10
+            pageLabel.layer.masksToBounds = true
+            
+            pageLabel.backgroundColor = UIColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 0.3)
+            pageLabel.textColor = UIColor.white
+            pageLabel.center = CGPoint(x: self.center.x, y: bounds.height - pageLabel.bounds.height/2 - 8)
+            
+            self.addSubview(pageLabel)
         }
-        if let currentPageColor = self.currentPageColor {
-            pageControl.currentPageIndicatorTintColor = currentPageColor
-        }
-        
-        self.addSubview(pageControl)
     }
     
     override func awakeFromNib() {
@@ -123,6 +144,7 @@ extension ImageCarouselView: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.pageControl.currentPage = self.currentPage
+        self.pageLabel.text = "\(self.currentPage+1) / \(images.count)"
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
