@@ -9,7 +9,7 @@
 import UIKit
 
 protocol ImageCarouselViewDelegate {
-    func scrolledToPage(page: Int)
+    func scrolledToPage(_ page: Int)
 }
 
 @IBDesignable
@@ -55,7 +55,7 @@ class ImageCarouselView: UIView {
         }
         
         carouselScrollView = UIScrollView(frame: bounds)
-        carouselScrollView.backgroundColor = UIColor.blackColor()
+        carouselScrollView.backgroundColor = UIColor.black
         carouselScrollView.showsHorizontalScrollIndicator = false
         
         addImages()
@@ -67,15 +67,15 @@ class ImageCarouselView: UIView {
     }
     
     func addImages() {
-        carouselScrollView.pagingEnabled = true
-        carouselScrollView.contentSize = CGSizeMake(bounds.width * CGFloat(images.count), bounds.height)
+        carouselScrollView.isPagingEnabled = true
+        carouselScrollView.contentSize = CGSize(width: bounds.width * CGFloat(images.count), height: bounds.height)
         
         for i in 0..<images.count {
-            let imageView = UIImageView(frame: CGRectMake(bounds.width * CGFloat(i), 0, bounds.width, bounds.height))
+            let imageView = UIImageView(frame: CGRect(x: bounds.width * CGFloat(i), y: 0, width: bounds.width, height: bounds.height))
             imageView.image = images[i]
-            imageView.contentMode = .ScaleAspectFill
+            imageView.contentMode = .scaleAspectFill
             imageView.layer.masksToBounds = true
-            imageView.userInteractionEnabled = true
+            imageView.isUserInteractionEnabled = true
             carouselScrollView.addSubview(imageView)
             print("Added")
         }
@@ -87,7 +87,7 @@ class ImageCarouselView: UIView {
         pageControl.numberOfPages = images.count
         pageControl.sizeToFit()
         pageControl.currentPage = 0
-        pageControl.center = CGPointMake(self.center.x, bounds.height - pageControl.bounds.height/2 - 8)
+        pageControl.center = CGPoint(x: self.center.x, y: bounds.height - pageControl.bounds.height/2 - 8)
         
         if let pageColor = self.pageColor {
             pageControl.pageIndicatorTintColor = pageColor
@@ -121,11 +121,11 @@ class ImageCarouselView: UIView {
 
 extension ImageCarouselView: UIScrollViewDelegate {
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.pageControl.currentPage = self.currentPage
     }
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         self.delegate?.scrolledToPage(self.currentPage)
     }
     
