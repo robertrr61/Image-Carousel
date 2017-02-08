@@ -28,7 +28,24 @@ class ImageCarouselView: UIView {
             setupView()
         }
     }
+    
+    @IBInspectable var autoScroll: Bool = false {
+        didSet {
+            print("AutoScroll")
+        }
+    }
+    
+    @IBInspectable var time: Float = 3.0 {
+        didSet {
+            print(time)
+        }
+    }
+    
     var pageLabel = UILabel()
+    
+    var counter = 1
+    
+    var banderaForTimer = true
     
     var carouselScrollView: UIScrollView!
     
@@ -134,8 +151,26 @@ class ImageCarouselView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
         setupView()
+        if autoScroll {
+            _ = Timer.scheduledTimer(timeInterval: TimeInterval(time), target: self, selector: #selector(scrollToPage), userInfo: nil, repeats: true)
+            self.carouselScrollView.isUserInteractionEnabled = false
+        }
+    }
+    
+    @objc private func scrollToPage() {
+        var frame: CGRect = self.carouselScrollView.frame
+        frame.origin.x = frame.size.width * CGFloat(self.counter)
+        frame.origin.y = 0;
+        print(frame.origin.x)
+        print(self.counter)
+        print(self.images.count)
+        self.carouselScrollView.scrollRectToVisible(frame, animated: true)
+        if self.counter == images.count - 1 {
+            self.counter = 0
+        } else {
+            self.counter += 1
+        }
     }
     
 }
